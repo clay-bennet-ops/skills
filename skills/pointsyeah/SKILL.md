@@ -1,7 +1,11 @@
 ---
 name: pointsyeah
-description: Search award flights using the PointsYeah API. Use when searching for flights bookable with points/miles, comparing award availability across airlines and transfer partners (Chase UR, Bilt, Amex MR, Capital One, Citi), or finding the best redemption value for a route. Supports one-way searches by origin, destination, date, and cabin class (Economy, Premium Economy, Business, First).
-metadata: {"openclaw": {"requires": {"bins": ["node"]}, "emoji": "✈️", "homepage": "https://github.com/clay-bennet-ops/pointsyeah"}}
+description: >
+  Search award flights using the PointsYeah API. Use when searching for flights
+  bookable with points/miles, comparing award availability across airlines and
+  transfer partners (Chase UR, Bilt, Amex MR, Capital One, Citi), or finding the
+  best redemption value for a route. Supports one-way searches by origin,
+  destination, date, and cabin class (Economy, Premium Economy, Business, First).
 ---
 
 # PointsYeah Award Flight Search
