@@ -1,6 +1,7 @@
 ---
 name: pointsyeah
 description: Search award flights using the PointsYeah API. Use when searching for flights bookable with points/miles, comparing award availability across airlines and transfer partners (Chase UR, Bilt, Amex MR, Capital One, Citi), or finding the best redemption value for a route. Supports one-way searches by origin, destination, date, and cabin class (Economy, Premium Economy, Business, First).
+metadata: {"openclaw": {"requires": {"bins": ["node"]}, "emoji": "✈️", "homepage": "https://github.com/clay-bennet-ops/pointsyeah"}}
 ---
 
 # PointsYeah Award Flight Search
@@ -20,7 +21,7 @@ To obtain a refresh token: log into pointsyeah.com in a browser, open DevTools �
 ## Usage
 
 ```bash
-node scripts/pointsyeah-api.js \
+node {baseDir}/scripts/pointsyeah-api.js \
   --departure JFK \
   --arrival CDG \
   --departDate 2026-08-15 \
@@ -101,7 +102,7 @@ For scanning many routes, run sequentially with delays:
 ```bash
 for CITY in CDG FCO LHR; do
   for DAY in 15 16 17 18; do
-    node scripts/pointsyeah-api.js \
+    node {baseDir}/scripts/pointsyeah-api.js \
       --departure NYC --arrival $CITY \
       --departDate "2026-08-$DAY" \
       --cabins "Premium Economy,Business" \

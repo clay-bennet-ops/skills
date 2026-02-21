@@ -1,0 +1,12 @@
+{
+  "name": "pointsyeah",
+  "version": "1.0.0",
+  "description": "Search award flights bookable with points/miles across all major loyalty programs. Supports Chase UR, Bilt, Amex MR, Capital One transfers.",
+  "author": {
+    "name": "clay-bennet-ops",
+    "url": "https://github.com/clay-bennet-ops"
+  },
+  "repository": "https://github.com/clay-bennet-ops/pointsyeah",
+  "license": "MIT",
+  "keywords": ["travel", "points", "flights", "awards", "miles", "chase", "bilt"]
+}
