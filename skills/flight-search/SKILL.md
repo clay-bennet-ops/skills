@@ -105,16 +105,14 @@ python check-prices.py --json
 python list-tracked.py
 ```
 
-## ⚠️ Separate Tickets Warning
+## ⚠️ IMPORTANT: Always Search Both Modes
 
-When using `--separate`, results are **two independent one-way tickets**, not a single round-trip booking. Always flag this to the user. Key differences:
+**For any round-trip search, you MUST run both a bundled search (`-r`) AND a separate search (`--separate`) unless the user explicitly says not to.** Google Flights often finds significantly cheaper fares by combining two one-way tickets. If you only run bundled, you may miss the best price.
 
-- **No rebooking protection** — if the outbound is delayed/cancelled, the airline has zero obligation to help with your return ticket (it's a different booking)
-- **Separate check-ins** — bags won't transfer automatically on connections across bookings
-- **No combined itinerary** — travel insurance may treat these as two unrelated trips
-- **Price can change** — by the time you book the second leg, the price may have moved
-
-This mode exists because Google Flights often shows cheaper "separate tickets" combos. The savings are real but so are the tradeoffs. **Always present both bundled (`-r`) and separate (`--separate`) prices so the user can decide.**
+Present both results clearly, noting which is bundled vs separate tickets. Separate tickets mean:
+- No rebooking protection if one leg is cancelled
+- Separate check-ins / bags won't auto-transfer
+- Price of second leg can change before you book it
 
 ## Data
 
