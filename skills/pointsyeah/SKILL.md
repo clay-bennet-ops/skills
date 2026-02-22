@@ -49,7 +49,7 @@ node {baseDir}/scripts/pointsyeah-api.js \
 | `--departure` | Yes | Origin airport or metro code | `JFK`, `NYC`, `LAX` |
 | `--arrival` | Yes | Destination airport or metro code | `CDG`, `NRT`, `LHR` |
 | `--departDate` | Yes | Start date in YYYY-MM-DD format | `2026-08-15` |
-| `--departDateTo` | No | End of date range (searches all dates from departDate to this) | `2026-08-18` |
+| `--departDateTo` | No | End of date range (searches all dates in range). ⚠️ Keep ranges ≤15 days — API caps results at 500 and longer ranges just waste poll time without returning more data. | `2026-08-18` |
 | `--cabins` | No | Comma-separated cabin classes | `"Business"`, `"Premium Economy,Business"` |
 | `--adults` | No | Number of adults (default: 1) | `2` |
 
