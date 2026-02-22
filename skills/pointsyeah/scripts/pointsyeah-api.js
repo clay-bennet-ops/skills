@@ -100,6 +100,7 @@ async function searchFlights(opts) {
     departure = 'JFK',
     arrival = 'CDG', 
     departDate = '2026-08-15',
+    departDateTo = null,
     cabins = ['Business'],
     adults = 1,
     children = 0,
@@ -107,7 +108,9 @@ async function searchFlights(opts) {
     airlines = ['KL', 'AF', 'AS', 'AA', 'DL', 'UA']
   } = opts;
 
-  console.log(`🔎 Searching: ${departure} → ${arrival} on ${departDate} (${cabins.join(', ')})`);
+  const endDate = departDateTo || departDate;
+  const dateLabel = departDateTo ? `${departDate} to ${departDateTo}` : departDate;
+  console.log(`🔎 Searching: ${departure} → ${arrival} on ${dateLabel} (${cabins.join(', ')})`);
 
   // Step 1: Get fresh tokens
   console.log('🔑 Refreshing auth tokens...');
@@ -131,7 +134,7 @@ async function searchFlights(opts) {
     segments: [{
       arrival,
       departure,
-      departure_date: { from: departDate, to: departDate }
+      departure_date: { from: departDate, to: endDate }
     }],
     passengers_v2: { adults, children },
     source: 'pc'
@@ -199,7 +202,9 @@ async function main() {
   for (let i = 0; i < args.length; i += 2) {
     const key = args[i].replace('--', '');
     const val = args[i + 1];
-    if (key === 'cabins' || key === 'banks' || key === 'airlines') {
+    if (key === 'departDateTo') {
+      opts.departDateTo = val;
+    } else if (key === 'cabins' || key === 'banks' || key === 'airlines') {
       opts[key] = val.split(',');
     } else if (key === 'adults' || key === 'children') {
       opts[key] = parseInt(val);

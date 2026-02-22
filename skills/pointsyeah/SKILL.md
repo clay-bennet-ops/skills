@@ -32,6 +32,14 @@ node {baseDir}/scripts/pointsyeah-api.js \
   --arrival CDG \
   --departDate 2026-08-15 \
   --cabins "Premium Economy,Business"
+
+# Date range search (searches all dates in range)
+node {baseDir}/scripts/pointsyeah-api.js \
+  --departure JFK \
+  --arrival CDG \
+  --departDate 2026-08-15 \
+  --departDateTo 2026-08-18 \
+  --cabins "Business"
 ```
 
 ### Parameters
@@ -40,7 +48,8 @@ node {baseDir}/scripts/pointsyeah-api.js \
 |-----------|----------|-------------|---------|
 | `--departure` | Yes | Origin airport or metro code | `JFK`, `NYC`, `LAX` |
 | `--arrival` | Yes | Destination airport or metro code | `CDG`, `NRT`, `LHR` |
-| `--departDate` | Yes | Date in YYYY-MM-DD format | `2026-08-15` |
+| `--departDate` | Yes | Start date in YYYY-MM-DD format | `2026-08-15` |
+| `--departDateTo` | No | End of date range (searches all dates from departDate to this) | `2026-08-18` |
 | `--cabins` | No | Comma-separated cabin classes | `"Business"`, `"Premium Economy,Business"` |
 | `--adults` | No | Number of adults (default: 1) | `2` |
 
