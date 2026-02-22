@@ -71,7 +71,7 @@ python search-flights.py JFK MIA 2026-03-19 --no-exclude
 | `--before` | Depart before hour |
 | `--max-duration` | Max duration in minutes |
 | `-o, --output` | json (default) or text |
-| `--separate` | Search each direction as one-way, combine cheapest (like Google's "separate tickets") |
+| `--separate` | Search each direction as one-way, combine cheapest (⚠️ see warning below) |
 | `--sort` | price (default), duration, stops |
 
 **JSON output** includes full leg details for both outbound and return flights.
@@ -104,6 +104,17 @@ python check-prices.py --json
 ```bash
 python list-tracked.py
 ```
+
+## ⚠️ Separate Tickets Warning
+
+When using `--separate`, results are **two independent one-way tickets**, not a single round-trip booking. Always flag this to the user. Key differences:
+
+- **No rebooking protection** — if the outbound is delayed/cancelled, the airline has zero obligation to help with your return ticket (it's a different booking)
+- **Separate check-ins** — bags won't transfer automatically on connections across bookings
+- **No combined itinerary** — travel insurance may treat these as two unrelated trips
+- **Price can change** — by the time you book the second leg, the price may have moved
+
+This mode exists because Google Flights often shows cheaper "separate tickets" combos. The savings are real but so are the tradeoffs. **Always present both bundled (`-r`) and separate (`--separate`) prices so the user can decide.**
 
 ## Data
 
