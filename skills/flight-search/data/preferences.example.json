@@ -1,0 +1,7 @@
+{
+  "exclude_airlines": [],
+  "default_cabin": "economy",
+  "default_adults": 1,
+  "default_stops": "any",
+  "default_sort": "price"
+}

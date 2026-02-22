@@ -1,51 +1,15 @@
-# PointsYeah
+# Skills
 
-Search award flights bookable with points/miles across all major loyalty programs.
+A collection of OpenClaw / Claude Code skills for travel and flight search.
 
-Works with **Claude Code**, **Claude Cowork**, and **OpenClaw**.
+## Skills
 
-## Features
+### pointsyeah
+Search award flights using the PointsYeah API. Compare availability across transfer partners (Chase UR, Bilt, Amex MR, Capital One, Citi).
 
-- Search any origin/destination pair for award availability
-- All major transfer partners: Chase UR, Bilt, Amex MR, Capital One, Citi
-- Shows exact points needed from each bank (including active transfer bonuses)
-- Supports Economy, Premium Economy, Business, and First class
-- Metro code support (NYC, LON, TYO, etc.)
+### flight-search
+Search Google Flights for cash prices. Track prices over time with alerts. Multi-airport, airline filtering, round-trip support.
 
 ## Install
 
-### Claude Code / Cowork
-```bash
-claude --plugin-dir ./pointsyeah
-```
-Then use: `/pointsyeah:pointsyeah JFK to CDG on 2026-08-15 in Business`
-
-### OpenClaw
-Copy `skills/pointsyeah/` to your workspace `skills/` directory.
-
-## Setup
-
-Requires a PointsYeah account. Get your refresh token:
-
-1. Log into pointsyeah.com in a browser
-2. Open DevTools → Application → Local Storage
-3. Find `CognitoIdentityServiceProvider.*.refreshToken`
-4. Set it: `export PY_REFRESH_TOKEN="<token>"`
-
-## Usage
-
-```bash
-node skills/pointsyeah/scripts/pointsyeah-api.js \
-  --departure JFK \
-  --arrival CDG \
-  --departDate 2026-08-15 \
-  --cabins "Premium Economy,Business"
-```
-
-## Rate Limiting
-
-Wait 20-30 seconds between searches to avoid 429 errors.
-
-## License
-
-MIT
+Each skill has its own `SKILL.md` with setup instructions. Skills are in `skills/<name>/`.
