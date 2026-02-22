@@ -20,7 +20,9 @@ Requires a PointsYeah account. Set the refresh token:
 export PY_REFRESH_TOKEN="<cognito_refresh_token>"
 ```
 
-To obtain a refresh token: log into pointsyeah.com in a browser, open DevTools → Application → Local Storage → look for `CognitoIdentityServiceProvider.*.refreshToken`.
+To obtain a refresh token: log into pointsyeah.com in a browser, open DevTools → Application tab.
+
+⚠️ **Check Cookies first, NOT Local Storage.** Local Storage may contain a stale token that Cognito never updates. The fresh token is typically in Cookies under `CognitoIdentityServiceProvider.*.refreshToken`. Only fall back to Local Storage if Cookies has nothing.
 
 ## Usage
 
