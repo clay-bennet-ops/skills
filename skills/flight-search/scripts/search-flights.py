@@ -54,6 +54,8 @@ def parse_args():
     p.add_argument("--before", type=int, help="Depart before this hour (24h)")
     p.add_argument("--max-duration", type=int, help="Max flight duration in minutes")
     p.add_argument("--output", "-o", default="json", choices=["json", "text"], help="Output format")
+    p.add_argument("--separate", action="store_true",
+                   help="Search each direction as separate one-ways (finds cheaper 'separate tickets' combos)")
     p.add_argument("--sort", default="price", choices=["price", "duration", "stops"])
     return p.parse_args()
 
@@ -87,6 +89,7 @@ def main():
     include = {c.strip().upper() for c in args.include.split(",")} if args.include else None
 
     is_round_trip = bool(args.return_date)
+    use_separate = args.separate and is_round_trip
     all_results = []
 
     for orig_code, dest_code, date in product(origins, destinations, dates):
@@ -97,75 +100,157 @@ def main():
             print(f"Unknown airport: {e}", file=sys.stderr)
             continue
 
-        segments = [FlightSegment(
-            departure_airport=[[origin, 0]],
-            arrival_airport=[[destination, 0]],
-            travel_date=date,
-        )]
+        if use_separate:
+            # Search each direction as independent one-ways, then combine
+            print(f"Searching {orig_code} → {dest_code} on {date} (separate outbound)...", file=sys.stderr)
+            out_filters = FlightSearchFilters(
+                trip_type=TripType.ONE_WAY,
+                passenger_info=PassengerInfo(adults=args.adults),
+                flight_segments=[FlightSegment(
+                    departure_airport=[[origin, 0]],
+                    arrival_airport=[[destination, 0]],
+                    travel_date=date,
+                )],
+                seat_type=SEAT_MAP[args.cabin],
+                stops=STOPS_MAP[args.stops],
+            )
+            out_results, currency = search_with_currency(out_filters, top_n=args.results)
 
-        trip_type = TripType.ONE_WAY
-        if is_round_trip:
-            segments.append(FlightSegment(
-                departure_airport=[[destination, 0]],
-                arrival_airport=[[origin, 0]],
-                travel_date=args.return_date,
-            ))
-            trip_type = TripType.ROUND_TRIP
+            print(f"Searching {dest_code} → {orig_code} on {args.return_date} (separate return)...", file=sys.stderr)
+            ret_filters = FlightSearchFilters(
+                trip_type=TripType.ONE_WAY,
+                passenger_info=PassengerInfo(adults=args.adults),
+                flight_segments=[FlightSegment(
+                    departure_airport=[[destination, 0]],
+                    arrival_airport=[[origin, 0]],
+                    travel_date=args.return_date,
+                )],
+                seat_type=SEAT_MAP[args.cabin],
+                stops=STOPS_MAP[args.stops],
+            )
+            ret_results, ret_currency = search_with_currency(ret_filters, top_n=args.results)
 
-        filters = FlightSearchFilters(
-            trip_type=trip_type,
-            passenger_info=PassengerInfo(adults=args.adults),
-            flight_segments=segments,
-            seat_type=SEAT_MAP[args.cabin],
-            stops=STOPS_MAP[args.stops],
-        )
+            if not out_results or not ret_results:
+                print(f"  No results for one or both directions.", file=sys.stderr)
+                continue
 
-        print(f"Searching {orig_code} → {dest_code} on {date}...", file=sys.stderr)
-        results, currency = search_with_currency(filters, top_n=args.results)
+            # Filter each direction independently
+            out_results = filter_results(out_results, exclude_airlines=exclude,
+                include_airlines=include, depart_after=args.after,
+                depart_before=args.before, max_duration=args.max_duration,
+                is_round_trip=False)
+            ret_results = filter_results(ret_results, exclude_airlines=exclude,
+                include_airlines=include, depart_after=args.after,
+                depart_before=args.before, max_duration=args.max_duration,
+                is_round_trip=False)
 
-        if not results:
-            print(f"  No results.", file=sys.stderr)
-            continue
+            if not out_results or not ret_results:
+                print(f"  No results after filtering.", file=sys.stderr)
+                continue
 
-        # Apply post-filters
-        results = filter_results(
-            results,
-            exclude_airlines=exclude,
-            include_airlines=include,
-            depart_after=args.after,
-            depart_before=args.before,
-            max_duration=args.max_duration,
-            is_round_trip=is_round_trip,
-        )
+            # Sort each direction by price, take top N
+            out_results.sort(key=lambda x: x.price)
+            ret_results.sort(key=lambda x: x.price)
+            out_top = out_results[:args.results]
+            ret_top = ret_results[:args.results]
 
-        # Sort
-        if args.sort == "price":
-            if is_round_trip:
-                results.sort(key=lambda x: x[0].price + x[1].price if isinstance(x, tuple) else x.price)
+            # Combine: pair each outbound with each return, sort by total, take top N
+            pairs = []
+            for o in out_top:
+                for r in ret_top:
+                    pairs.append((o, r))
+
+            if args.sort == "price":
+                pairs.sort(key=lambda x: x[0].price + x[1].price)
+            elif args.sort == "duration":
+                pairs.sort(key=lambda x: x[0].duration + x[1].duration)
+
+            results = pairs[:args.results]
+
+            if args.output == "json":
+                formatted = format_results(results, currency, is_round_trip=True)
+                for f in formatted:
+                    f["search"] = {"origin": orig_code, "destination": dest_code,
+                                   "date": date, "return_date": args.return_date,
+                                   "separate_tickets": True}
+                all_results.extend(formatted)
             else:
-                results.sort(key=lambda x: x.price)
-        elif args.sort == "duration":
-            if is_round_trip:
-                results.sort(key=lambda x: x[0].duration + x[1].duration if isinstance(x, tuple) else x.duration)
-            else:
-                results.sort(key=lambda x: x.duration)
+                print(f"\n{'='*60}")
+                print(f"{orig_code} → {dest_code} | {date} | {args.cabin} | {args.adults} pax | {currency}")
+                print(f"Return: {args.return_date} | ⚠️  SEPARATE TICKETS (not bundled)")
+                print(format_text(results, currency, is_round_trip=True))
+                print(f"\n{len(results)} result(s)")
 
-        results = results[:args.results]
-
-        if args.output == "json":
-            formatted = format_results(results, currency, is_round_trip)
-            for f in formatted:
-                f["search"] = {"origin": orig_code, "destination": dest_code, "date": date}
-                if is_round_trip:
-                    f["search"]["return_date"] = args.return_date
-            all_results.extend(formatted)
         else:
-            print(f"\n{'='*60}")
-            print(f"{orig_code} → {dest_code} | {date} | {args.cabin} | {args.adults} pax | {currency}")
+            segments = [FlightSegment(
+                departure_airport=[[origin, 0]],
+                arrival_airport=[[destination, 0]],
+                travel_date=date,
+            )]
+
+            trip_type = TripType.ONE_WAY
             if is_round_trip:
-                print(f"Return: {args.return_date}")
-            print(format_text(results, currency, is_round_trip))
-            print(f"\n{len(results)} result(s)")
+                segments.append(FlightSegment(
+                    departure_airport=[[destination, 0]],
+                    arrival_airport=[[origin, 0]],
+                    travel_date=args.return_date,
+                ))
+                trip_type = TripType.ROUND_TRIP
+
+            filters = FlightSearchFilters(
+                trip_type=trip_type,
+                passenger_info=PassengerInfo(adults=args.adults),
+                flight_segments=segments,
+                seat_type=SEAT_MAP[args.cabin],
+                stops=STOPS_MAP[args.stops],
+            )
+
+            print(f"Searching {orig_code} → {dest_code} on {date}...", file=sys.stderr)
+            results, currency = search_with_currency(filters, top_n=args.results)
+
+            if not results:
+                print(f"  No results.", file=sys.stderr)
+                continue
+
+            # Apply post-filters
+            results = filter_results(
+                results,
+                exclude_airlines=exclude,
+                include_airlines=include,
+                depart_after=args.after,
+                depart_before=args.before,
+                max_duration=args.max_duration,
+                is_round_trip=is_round_trip,
+            )
+
+            # Sort
+            if args.sort == "price":
+                if is_round_trip:
+                    results.sort(key=lambda x: x[0].price + x[1].price if isinstance(x, tuple) else x.price)
+                else:
+                    results.sort(key=lambda x: x.price)
+            elif args.sort == "duration":
+                if is_round_trip:
+                    results.sort(key=lambda x: x[0].duration + x[1].duration if isinstance(x, tuple) else x.duration)
+                else:
+                    results.sort(key=lambda x: x.duration)
+
+            results = results[:args.results]
+
+            if args.output == "json":
+                formatted = format_results(results, currency, is_round_trip)
+                for f in formatted:
+                    f["search"] = {"origin": orig_code, "destination": dest_code, "date": date}
+                    if is_round_trip:
+                        f["search"]["return_date"] = args.return_date
+                all_results.extend(formatted)
+            else:
+                print(f"\n{'='*60}")
+                print(f"{orig_code} → {dest_code} | {date} | {args.cabin} | {args.adults} pax | {currency}")
+                if is_round_trip:
+                    print(f"Return: {args.return_date}")
+                print(format_text(results, currency, is_round_trip))
+                print(f"\n{len(results)} result(s)")
 
     if args.output == "json":
         print(json.dumps(all_results, indent=2))

@@ -36,6 +36,9 @@ python search-flights.py JFK,EWR,LGA MIA 2026-03-19 -r 2026-03-22 -a 2 --after 1
 # Business class, nonstop only
 python search-flights.py JFK CDG 2026-08-16 -c business -s nonstop
 
+# Separate tickets (searches each direction as one-way, finds cheaper combos)
+python search-flights.py JFK MIA 2026-03-19 -r 2026-03-22 --separate
+
 # Date range scan
 python search-flights.py JFK MIA 2026-03-18 --date-to 2026-03-21
 
@@ -68,6 +71,7 @@ python search-flights.py JFK MIA 2026-03-19 --no-exclude
 | `--before` | Depart before hour |
 | `--max-duration` | Max duration in minutes |
 | `-o, --output` | json (default) or text |
+| `--separate` | Search each direction as one-way, combine cheapest (like Google's "separate tickets") |
 | `--sort` | price (default), duration, stops |
 
 **JSON output** includes full leg details for both outbound and return flights.
