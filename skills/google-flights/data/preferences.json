@@ -1,0 +1,7 @@
+{
+  "exclude_airlines": ["NK", "F9"],
+  "default_cabin": "economy",
+  "default_adults": 2,
+  "default_stops": "any",
+  "default_sort": "price"
+}

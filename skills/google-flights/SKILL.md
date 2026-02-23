@@ -1,5 +1,5 @@
 ---
-name: flight-search
+name: google-flights
 description: >
   Search Google Flights for cash flight prices and track price changes over time.
   Use when searching for flights, comparing prices across airlines and airports,
@@ -15,14 +15,14 @@ Search Google Flights and track prices. No API key needed.
 ## Setup
 
 ```bash
-bash skills/flight-search/setup.sh
+bash skills/google-flights/setup.sh
 ```
 
 Requires: Python 3, pip
 
 ## Scripts
 
-All scripts are in `skills/flight-search/scripts/`. Run from that directory.
+All scripts are in `skills/google-flights/scripts/`. Run from that directory.
 
 ### search-flights.py — Search flights
 
@@ -116,7 +116,7 @@ Present both results clearly, noting which is bundled vs separate tickets. Separ
 
 ## Data
 
-Price history stored in `skills/flight-search/data/tracked.json`.
+Price history stored in `skills/google-flights/data/tracked.json`.
 
 ## Notes
 
