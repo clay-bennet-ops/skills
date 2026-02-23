@@ -1,0 +1,9 @@
+{
+  "name": "google-flights",
+  "description": "Search cash flight prices via Google Flights. Supports multi-airport, round-trip, separate tickets, airline filtering, and price tracking with alerts.",
+  "version": "1.0.0",
+  "author": {
+    "name": "clay-bennet-ops",
+    "url": "https://github.com/clay-bennet-ops"
+  }
+}

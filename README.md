@@ -1,15 +1,43 @@
-# Skills
+# Travel Skills — Claude Code Plugin Marketplace
 
-A collection of OpenClaw / Claude Code skills for travel and flight search.
+A plugin marketplace for Claude Code with award travel and flight search tools.
 
-## Skills
+## Plugins
 
-### pointsyeah
-Search award flights using the PointsYeah API. Compare availability across transfer partners (Chase UR, Bilt, Amex MR, Capital One, Citi).
-
-### flight-search
-Search Google Flights for cash prices. Track prices over time with alerts. Multi-airport, airline filtering, round-trip support.
+| Plugin | Description |
+|--------|-------------|
+| **pointsyeah-flights** | Search award flights bookable with points/miles via PointsYeah |
+| **pointsyeah-hotels** | Search hotel award availability and pricing via PointsYeah |
+| **google-flights** | Search cash flight prices via Google Flights with price tracking |
 
 ## Install
 
-Each skill has its own `SKILL.md` with setup instructions. Skills are in `skills/<name>/`.
+Add the marketplace and install plugins:
+
+```bash
+/plugin marketplace add https://github.com/clay-bennet-ops/skills
+/plugin install pointsyeah-flights@travel-skills
+/plugin install pointsyeah-hotels@travel-skills
+/plugin install google-flights@travel-skills
+```
+
+## Plugin Details
+
+### pointsyeah-flights
+Search award flights across all major loyalty programs. Supports Chase UR, Bilt, Amex MR, Capital One, Citi, and Wells Fargo transfer partners.
+
+**Requires**: Node.js, PointsYeah account (free), Cognito refresh token
+
+### pointsyeah-hotels
+Search hotel award availability and pricing. Compare points prices across Hyatt, Marriott, Hilton, IHG, Choice, and Wyndham with OTA price comparisons.
+
+**Requires**: Node.js, PointsYeah account (free), Cognito refresh token
+
+### google-flights
+Search cash flight prices with multi-airport support, round-trip/one-way, separate ticket pricing, airline filtering, and price tracking with alerts.
+
+**Requires**: Python 3, `flights` library (`pip install flights`)
+
+## License
+
+MIT

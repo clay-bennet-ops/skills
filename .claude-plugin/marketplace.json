@@ -1,0 +1,38 @@
+{
+  "name": "travel-skills",
+  "owner": {
+    "name": "clay-bennet-ops",
+    "email": "clay.bennett.ops@outlook.com"
+  },
+  "metadata": {
+    "description": "Award travel and flight search plugins for Claude Code. Search flights and hotels bookable with points/miles, compare cash prices, and track price changes.",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "pointsyeah-flights",
+      "source": "./pointsyeah-flights",
+      "description": "Search award flights bookable with points/miles via PointsYeah. Covers all major airline loyalty programs.",
+      "version": "1.0.0",
+      "category": "travel",
+      "tags": ["flights", "points", "miles", "awards", "travel"]
+    },
+    {
+      "name": "pointsyeah-hotels",
+      "source": "./pointsyeah-hotels",
+      "description": "Search hotel award availability and pricing via PointsYeah. Compare points prices across Hyatt, Marriott, Hilton, and more.",
+      "version": "1.0.0",
+      "category": "travel",
+      "tags": ["hotels", "points", "miles", "awards", "travel"]
+    },
+    {
+      "name": "google-flights",
+      "source": "./google-flights",
+      "description": "Search cash flight prices via Google Flights with multi-airport, round-trip, separate tickets, and price tracking.",
+      "version": "1.0.0",
+      "category": "travel",
+      "tags": ["flights", "cash", "google-flights", "price-tracking", "travel"]
+    }
+  ]
+}
