@@ -16,9 +16,9 @@ Add the marketplace and install plugins:
 
 ```bash
 /plugin marketplace add https://github.com/clay-bennet-ops/skills
-/plugin install pointsyeah-flights@travel-skills
-/plugin install pointsyeah-hotels@travel-skills
-/plugin install google-flights@travel-skills
+/plugin install PointsYeah-flights@travel-skills
+/plugin install PointsYeah-hotels@travel-skills
+/plugin install Google-flights@travel-skills
 ```
 
 ## Plugin Details
