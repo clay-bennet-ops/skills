@@ -98,3 +98,21 @@ Price history stored in `skills/hotel-search/data/tracked.json`.
 - Deal info shows percentage below typical price
 - Results limited to what Google returns on first page (~20-40 hotels)
 - For best results, use specific location names ("Manhattan NYC" vs "New York")
+
+## ⚠️ Price Accuracy Warning
+
+The search results page returns **estimated/typical prices**, NOT live booking rates. These are useful for:
+- **Comparing hotels against each other** (relative pricing is accurate)
+- **Getting a ballpark** for a destination
+
+But they are **NOT reliable for**:
+- Price fluctuations by date (cherry blossom vs off-peak)
+- Tracking price drops over time
+- Getting exact booking rates
+
+For live prices on a specific hotel, use the **browser-based detail page** approach:
+1. Navigate to the hotel's Google Travel entity page
+2. Set dates via the date picker UI
+3. Read OTA prices from the Prices tab
+
+The CLI scripts use the fast curl approach (estimated prices). Flag results accordingly.
