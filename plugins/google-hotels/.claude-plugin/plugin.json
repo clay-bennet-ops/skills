@@ -1,0 +1,9 @@
+{
+  "name": "Google-hotels",
+  "description": "Search hotel prices via Google Hotels. Supports location search, date ranges, rating/price filters, deal detection, and price tracking with alerts.",
+  "version": "1.0.0",
+  "author": {
+    "name": "clay-bennet-ops",
+    "url": "https://github.com/clay-bennet-ops"
+  }
+}
