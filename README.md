@@ -20,6 +20,7 @@ Add the marketplace and install plugins:
 /plugin install PointsYeah-flights@travel-skills
 /plugin install PointsYeah-hotels@travel-skills
 /plugin install Google-flights@travel-skills
+/plugin install Google-hotels@travel-skills
 ```
 
 ## Plugin Details
