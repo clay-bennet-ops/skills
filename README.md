@@ -9,6 +9,7 @@ A plugin marketplace for Claude Code with award travel and flight search tools.
 | **pointsyeah-flights** | Search award flights bookable with points/miles via PointsYeah |
 | **pointsyeah-hotels** | Search hotel award availability and pricing via PointsYeah |
 | **google-flights** | Search cash flight prices via Google Flights with price tracking |
+| **google-hotels** | Search hotel prices via Google Hotels with live date-accurate pricing |
 
 ## Install
 
@@ -37,6 +38,11 @@ Search hotel award availability and pricing. Compare points prices across Hyatt,
 Search cash flight prices with multi-airport support, round-trip/one-way, separate ticket pricing, airline filtering, and price tracking with alerts.
 
 **Requires**: Python 3, `flights` library (`pip install flights`)
+
+### google-hotels
+Search hotel prices with live, date-accurate pricing. Reverse-engineers Google Hotels' protobuf format to get real rates (not cached estimates). Supports any location, price/rating filters, deal detection, and price tracking.
+
+**Requires**: Python 3, `curl-cffi` (`pip install curl-cffi`)
 
 ## License
 
