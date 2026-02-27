@@ -1,7 +1,7 @@
 {
   "name": "Google-hotels",
-  "description": "Search hotel prices via Google Hotels. Supports location search, date ranges, rating/price filters, deal detection, and price tracking with alerts.",
-  "version": "1.0.0",
+  "description": "Search Google Hotels with live, date-accurate pricing via reverse-engineered protobuf. No API key or browser needed. Supports any location, price/rating filters, deal detection, and price tracking.",
+  "version": "2.0.0",
   "author": {
     "name": "clay-bennet-ops",
     "url": "https://github.com/clay-bennet-ops"
