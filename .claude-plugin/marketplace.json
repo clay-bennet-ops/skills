@@ -5,13 +5,13 @@
     "email": "clay.bennett.ops@outlook.com"
   },
   "metadata": {
-    "description": "Award travel and flight search plugins for Claude Code. Search flights and hotels bookable with points/miles, compare cash prices, and track price changes.",
-    "version": "1.0.0",
+    "description": "Travel search plugins for Claude Code. Search flights and hotels with points/miles or cash prices, and track price changes.",
+    "version": "1.1.0",
     "pluginRoot": "./plugins"
   },
   "plugins": [
     {
-      "name": "PointsYeah-flights",
+      "name": "pointsyeah-flights",
       "source": "./pointsyeah-flights",
       "description": "Search award flights bookable with points/miles via PointsYeah. Covers all major airline loyalty programs.",
       "version": "1.0.0",
@@ -19,7 +19,7 @@
       "tags": ["flights", "points", "miles", "awards", "travel"]
     },
     {
-      "name": "PointsYeah-hotels",
+      "name": "pointsyeah-hotels",
       "source": "./pointsyeah-hotels",
       "description": "Search hotel award availability and pricing via PointsYeah. Compare points prices across Hyatt, Marriott, Hilton, and more.",
       "version": "1.0.0",
@@ -27,20 +27,20 @@
       "tags": ["hotels", "points", "miles", "awards", "travel"]
     },
     {
-      "name": "Google-flights",
+      "name": "google-flights",
       "source": "./google-flights",
       "description": "Search cash flight prices via Google Flights with multi-airport, round-trip, separate tickets, and price tracking.",
       "version": "1.0.0",
       "category": "travel",
-      "tags": ["flights", "cash", "Google-flights", "price-tracking", "travel"]
+      "tags": ["flights", "cash", "price-tracking", "travel"]
     },
     {
-      "name": "Google-hotels",
+      "name": "google-hotels",
       "source": "./google-hotels",
       "description": "Search Google Hotels with live, date-accurate pricing via reverse-engineered protobuf. No API key or browser needed.",
       "version": "2.0.0",
       "category": "travel",
-      "tags": ["hotels", "cash", "Google-hotels", "price-tracking", "travel"]
+      "tags": ["hotels", "cash", "price-tracking", "travel"]
     }
   ]
 }

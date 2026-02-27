@@ -1,9 +1,8 @@
 {
-  "name": "Google-hotels",
+  "name": "google-hotels",
   "description": "Search Google Hotels with live, date-accurate pricing via reverse-engineered protobuf. No API key or browser needed. Supports any location, price/rating filters, deal detection, and price tracking.",
   "version": "2.0.0",
   "author": {
-    "name": "clay-bennet-ops",
-    "url": "https://github.com/clay-bennet-ops"
+    "name": "clay-bennet-ops"
   }
 }

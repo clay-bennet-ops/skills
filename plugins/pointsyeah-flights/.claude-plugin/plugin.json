@@ -1,9 +1,8 @@
 {
-  "name": "PointsYeah-flights",
+  "name": "pointsyeah-flights",
   "description": "Search award flights bookable with points/miles via PointsYeah. Covers all major airline loyalty programs with Chase UR, Bilt, Amex MR, Capital One, Citi, and Wells Fargo transfer partners.",
   "version": "1.0.0",
   "author": {
-    "name": "clay-bennet-ops",
-    "url": "https://github.com/clay-bennet-ops"
+    "name": "clay-bennet-ops"
   }
 }

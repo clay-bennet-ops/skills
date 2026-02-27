@@ -1,3 +1,10 @@
+---
+name: pointsyeah-hotels
+description: >
+  Search hotel award availability and pricing across loyalty programs via PointsYeah.
+  Use when searching for hotels bookable with points/miles.
+---
+
 # PointsYeah Hotel Search Skill
 
 Search hotel award availability and pricing across loyalty programs via the PointsYeah API.

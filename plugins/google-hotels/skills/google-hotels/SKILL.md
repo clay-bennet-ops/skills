@@ -1,5 +1,5 @@
 ---
-name: hotel-search
+name: google-hotels
 description: >
   Search Google Hotels for hotel prices with live date-accurate pricing.
   Use when searching for hotels, comparing prices across properties,
