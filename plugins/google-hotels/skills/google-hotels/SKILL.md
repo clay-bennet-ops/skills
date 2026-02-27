@@ -1,7 +1,7 @@
 ---
 name: hotel-search
 description: >
-  Search Google Hotels for hotel prices and track price changes over time.
+  Search Google Hotels for hotel prices with live date-accurate pricing.
   Use when searching for hotels, comparing prices across properties,
   monitoring price drops, or planning travel accommodations. Supports
   location-based search, date ranges, rating filters, price filters,
@@ -10,7 +10,7 @@ description: >
 
 # Hotel Search
 
-Search Google Hotels and track prices. No API key needed.
+Search Google Hotels with **live, date-accurate pricing** via curl. No API key needed.
 
 ## Setup
 
@@ -20,24 +20,34 @@ bash skills/hotel-search/setup.sh
 
 Requires: Python 3, curl-cffi
 
+## How It Works
+
+Google Hotels uses a `ts=` URL parameter containing a protobuf-encoded blob with location + dates.
+When present, prices are live and date-accurate. Without it, they're cached garbage.
+
+The skill:
+1. Fetches a Google Hotels page for the location to extract the Google Maps place ID
+2. Builds a protobuf `ts=` parameter encoding the place ID + check-in/check-out dates
+3. Fetches the results page with the `ts=` param → live prices
+4. Parses hotel names, prices, ratings, reviews, deals from `aria-label` attributes
+
+All via `curl_cffi` in ~2 seconds.
+
 ## Scripts
 
-All scripts are in `skills/hotel-search/scripts/`. Run from that directory.
+All scripts are in `skills/hotel-search/scripts/`.
 
-### search-hotels.py — Search hotels
+### search-hotels.py — Search hotels with live prices
 
 ```bash
 # Basic search
-python search-hotels.py "New York City" 2026-03-15 2026-03-18
+python search-hotels.py "New York City" 2026-12-31 2027-01-02
 
 # Filter by rating and price
 python search-hotels.py "Paris France" 2026-08-16 2026-08-25 --min-rating 4.0 --max-price 300
 
 # Sort by rating, JSON output
-python search-hotels.py "Miami Beach" 2026-06-01 2026-06-05 -s rating -o json
-
-# Budget search
-python search-hotels.py "Tokyo" 2026-04-01 2026-04-07 --max-price 150 -n 20
+python search-hotels.py "Tokyo Japan" 2026-04-01 2026-04-05 -s rating -o json
 ```
 
 **Options:**
@@ -53,36 +63,17 @@ python search-hotels.py "Tokyo" 2026-04-01 2026-04-07 --max-price 150 -n 20
 | `-s, --sort` | price (default), rating, relevance |
 | `-n, --results` | Max results (default: 15) |
 | `-o, --output` | text (default) or json |
-| `--currency` | Currency code (default: USD) |
-
-**JSON output** includes search metadata, hotel name, price per night, rating, review count, and deal info.
 
 ### track-hotel.py — Track a search for price monitoring
 
 ```bash
-# Track NYC hotels with a target price
 python track-hotel.py "New York City" 2026-03-15 2026-03-18 -t 120
-
-# Track a specific hotel
-python track-hotel.py "Paris France" 2026-08-16 2026-08-25 --hotel-name "Hotel Le Marais"
 ```
 
-### check-prices.py — Check all tracked hotels (cron-ready)
+### check-prices.py / list-tracked.py — Price tracking
 
 ```bash
-# Check all tracked searches
 python check-prices.py
-
-# Alert on 5% drops (default: 10%)
-python check-prices.py --threshold 5
-
-# JSON output for automated processing
-python check-prices.py --json
-```
-
-### list-tracked.py — Show tracked searches
-
-```bash
 python list-tracked.py
 ```
 
@@ -90,29 +81,13 @@ python list-tracked.py
 
 Price history stored in `skills/hotel-search/data/tracked.json`.
 
-## Notes
+## API (search_utils.py)
 
-- Uses curl_cffi to scrape Google Hotels (no API key needed)
-- Prices are per night per room
-- Ratings are guest ratings (out of 5), not star class
-- Deal info shows percentage below typical price
-- Results limited to what Google returns on first page (~20-40 hotels)
-- For best results, use specific location names ("Manhattan NYC" vs "New York")
+```python
+from search_utils import fetch_hotels, format_results_text, format_results_json
 
-## ⚠️ Price Accuracy Warning
+hotels = fetch_hotels("New York City", "2026-12-31", "2027-01-02", max_results=10)
+# Each hotel: {name, price, rating, reviews, deal_pct, deal_type, entity_id, live_price}
 
-The search results page returns **estimated/typical prices**, NOT live booking rates. These are useful for:
-- **Comparing hotels against each other** (relative pricing is accurate)
-- **Getting a ballpark** for a destination
-
-But they are **NOT reliable for**:
-- Price fluctuations by date (cherry blossom vs off-peak)
-- Tracking price drops over time
-- Getting exact booking rates
-
-For live prices on a specific hotel, use the **browser-based detail page** approach:
-1. Navigate to the hotel's Google Travel entity page
-2. Set dates via the date picker UI
-3. Read OTA prices from the Prices tab
-
-The CLI scripts use the fast curl approach (estimated prices). Flag results accordingly.
+print(format_results_text(hotels, "New York City", "2026-12-31", "2027-01-02"))
+```

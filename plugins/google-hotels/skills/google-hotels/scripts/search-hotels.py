@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Search Google Hotels for a location and dates. Outputs JSON or text."""
+"""Search Google Hotels for a location and dates. Outputs JSON or text.
+
+Uses protobuf-encoded ts= parameter for live, date-accurate pricing via curl.
+"""
 
 import argparse
 import json
