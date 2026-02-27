@@ -33,6 +33,14 @@
       "version": "1.0.0",
       "category": "travel",
       "tags": ["flights", "cash", "Google-flights", "price-tracking", "travel"]
+    },
+    {
+      "name": "Google-hotels",
+      "source": "./google-hotels",
+      "description": "Search Google Hotels with live, date-accurate pricing via reverse-engineered protobuf. No API key or browser needed.",
+      "version": "2.0.0",
+      "category": "travel",
+      "tags": ["hotels", "cash", "Google-hotels", "price-tracking", "travel"]
     }
   ]
 }
